@@ -1,24 +1,23 @@
+from .data_transfer import *
+import functools
 '''
 	设计：
-	所有机器有两个端口用来通信，一个是监听端口，用来收信息，另一个是发送端口，用来发送信息。
-	每条数据：
-	[FLAGS：1 | 源ip：4 | 源名称长度：4 | 消息上级名称：4 | 消息下级名称：4 | 源名称 |源数据]
-	FLAGS： 
-	0：特殊消息 / 一般消息
-	1：终止消息 / 继续消息
-	2
-	3
-	4
-	5
-	6
-	7
-	每条消息会按时间获得上级名称。在消息拆成多条时，每条子消息按时间获得下级名称。
+		[FLAGS：1 | 源名称长度：4 | 消息上级名称：4 | 消息下级名称：4 | 源名称 | 源数据]
+		FLAGS： 
+		0：(SPE) 一般消息 / 特殊消息
+		1：(STP) 继续消息 / 终止消息
 '''
 
 HEADINFO = [
-	["FLAGS" 		, 1] , 
-	["SRC_IP" 		, 4] , 
-	["SRC_NAME_LEN" , 4] , 
-	["MSG_UPP_NAME" , 4] , 
-	["MSG_LOW_NAME" , 4] , 
+	["flags" 		, 1 , bytes2int , functools.partial(int2bytes , length = 1)] , 
+	["src_name_len" , 4 , bytes2int , int2bytes] , 
+	["src_ip" 		, 4 , bytes2ip  , ip2bytes ] , 
+	["src_port" 	, 4 , bytes2int , int2bytes] , 
+	["upp_name" 	, 4 , bytes2int , int2bytes] , 
+	["low_name" 	, 4 , bytes2int , int2bytes] , 
+]
+
+FLAG_MASK = [
+	["SPE" , 1 << 0] , 
+	["STP" , 1 << 1] , 
 ]

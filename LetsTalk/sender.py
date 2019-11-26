@@ -1,15 +1,22 @@
 import socket
 
-def default_callback(s):
-	while True:
-		data = input()
-		s.sendall(bytes(data , encoding = "utf-8"))
+class SendServer:
+	def __init__(self , host = "127.0.0.1" , tarip = "127.0.0.1" , myport = 23333 , tarport = 65432):
+		self.host 		= host
+		self.tarip 		= tarip
+		self.myport 	= myport
+		self.tarport 	= tarport
 
+	def start(self):
+		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.socket.bind( (self.host , self.myport))
+		self.socket.connect( (self.tarip, self.tarport) )
 
-def send(host = "127.0.0.1" , myport = 23333 , tarport = 65432 , callback = default_callback):
+	def send(self , data):
+		if not hasattr(self , "socket"):
+			print ("no socket")
+			return	
+		self.socket.sendall(data)
 
-	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-		s.bind( (host , myport))
-		s.connect( (host, tarport) )
-
-		callback(s)
+	def close(self):
+		self.socket.close()
