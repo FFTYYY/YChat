@@ -1,2 +1,2 @@
 # LetsTalk
- A simple dialogue system. Cource project of Computer Network in Fudan.
+ A simple chatroom program. Cource project of Computer Network in Fudan.
