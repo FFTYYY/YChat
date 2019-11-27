@@ -1,5 +1,6 @@
 import socket
 from .utils.rand_val import rand_port
+import copy
 
 class SendServer:
 	def __init__(self , host = "127.0.0.1"):
@@ -17,11 +18,27 @@ class SendServer:
 		self.targets[tarip , tarport] = s
 
 	def send(self , data):
-		for addr , soc in self.targets.items():
-			soc.sendall(data)
+		leaved = []
+		for tarip , tarport in copy.copy(self.targets):
+			if not self.send_to(tarip , tarport , data):
+				leaved.append((tarip , tarport))
+		return leaved
 
 	def send_to(self , tarip , tarport , data):
-		self.targets[(tarip , tarport)].sendall(data)
+		'''return false if connection closed
+		'''
+		leaved = False
+
+		try:
+			self.targets[(tarip , tarport)].sendall(data)
+		except ConnectionResetError:
+			leaved = True
+			self.targets[(tarip , tarport)].close()
+
+		if leaved:
+			self.targets.pop((tarip , tarport))
+			
+		return not leaved
 
 	def close(self):
 		for addr , soc in self.targets.items():

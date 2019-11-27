@@ -37,7 +37,7 @@ class ConnectObject:
 		return Message(
 			src_ip 		= ip or self.ip , 
 			src_port 	= self.listenport , 
-			cont 	= content , 
+			cont 		= content , 
 			flags 		= flags
 		)
 
@@ -47,7 +47,10 @@ class ConnectObject:
 			msg = content_or_msg
 		else: msg = self.make_msg(content_or_msg , flags , ip)
 
-		self.send_server.send(msg.todata())	
+		leaved = self.send_server.send(msg.todata())
+
+		if hasattr(self , "onleave"):
+			self.onleave(leaved)
 
 	def send_to(self , tarip , tarport , content_or_msg , flags = [] , ip = None):
 
@@ -55,4 +58,12 @@ class ConnectObject:
 			msg = content_or_msg
 		else: msg = self.make_msg(content_or_msg , flags , ip)
 		
-		self.send_server.send_to(tarip , tarport , msg.todata())
+		leaved = self.send_server.send_to(tarip , tarport , msg.todata())
+		leaved = [(tarip , tarport)] if leaved else []
+
+		if hasattr(self , "onleave"):
+			self.onleave(leaved)
+
+	def close(self):
+		self.send_server.close()
+		self.listen_server.close()

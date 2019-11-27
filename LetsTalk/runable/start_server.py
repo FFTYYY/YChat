@@ -5,5 +5,8 @@ port = 23333 if not port else int(port)
 
 room = Room(listenport = port).prepare()
 
-while True:
-	pass
+try:
+	while True: 
+		pass
+except KeyboardInterrupt:
+	room.close()

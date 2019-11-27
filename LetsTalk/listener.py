@@ -1,12 +1,11 @@
 import socket
 import threading
 from .proto import Message
-
+from .utils.constants import MSG_MAX_LENGTH
 
 def default_callback(data , ip):
 	ip , port = ip
 	print (ip , port , ":", Message.fromdata(data))
-				
 
 class ChildListener(threading.Thread):
 	def __init__(self , conn , addr , callback):
@@ -16,14 +15,24 @@ class ChildListener(threading.Thread):
 		self.conn = conn
 		self.addr = addr
 		self.callback = callback
+		self.closed = False
 
 	def run(self):
 		with self.conn:
-			while True:
-				data = self.conn.recv(1024)
+			while not self.closed:
+
+				try:
+					data = self.conn.recv(MSG_MAX_LENGTH)
+				except ConnectionResetError:
+					self.conn.close()
+					break
+
 				if not data:
 					continue
 				self.callback(data , self.addr)
+
+	def close(self):
+		self.closed = True
 
 
 class ListenServer(threading.Thread):
@@ -36,6 +45,7 @@ class ListenServer(threading.Thread):
 		self.callback = callback
 
 		self.childs = []
+		self.closed = False
 	
 	def run(self):
 		with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -43,7 +53,7 @@ class ListenServer(threading.Thread):
 			s.listen()
 
 			conn_num = 0
-			while True:
+			while not self.closed:
 				conn, addr = s.accept()
 
 				conn_num += 1
@@ -54,3 +64,6 @@ class ListenServer(threading.Thread):
 				new_child.start()
 				self.childs.append(new_child)
 
+	def close(self):
+		for x in self.childs:
+			x.close()

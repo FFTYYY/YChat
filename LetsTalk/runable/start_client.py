@@ -12,6 +12,9 @@ port = input("输入目标的端口（默认为23333）：")
 port = 23333 if not port else int(port) 
 memb.connect_room(room_port = port)
 
-while True:
-	words = input()
-	memb.say(words)
+try:
+	while True:
+		words = input()
+		memb.say(words)
+except KeyboardInterrupt:
+	memb.close()

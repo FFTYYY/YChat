@@ -8,6 +8,7 @@ import functools
 		1：(STP) 继续消息 / 终止消息
 '''
 
+MSG_MAX_LENGTH = 1024
 CONTENT_LEN = 250
 
 HEADINFO = [

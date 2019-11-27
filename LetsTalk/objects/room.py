@@ -40,3 +40,9 @@ class Room(ConnectObject):
 		msg = self.from_msg(data)
 
 		room_action(self , msg)
+
+	def onleave(self , leaved):
+		for x in leaved:
+			self.mem_name.pop(x)
+		#注意，无需显式关闭监听的socket，在程序退出时其会自动关闭
+			

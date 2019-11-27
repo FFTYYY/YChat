@@ -43,3 +43,9 @@ class Member(ConnectObject):
 		msg = self.from_msg(data)
 
 		member_action(self , msg)
+
+	def onleave(self , leaved):
+		if len(leaved) <= 0:
+			return 
+		self.close()
+		ui_actions["member_server_closed"](self)
