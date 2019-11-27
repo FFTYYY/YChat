@@ -8,16 +8,18 @@ import functools
 		1：(STP) 继续消息 / 终止消息
 '''
 
+CONTENT_LEN = 250
+
 HEADINFO = [
 	["flags" 		, 1 , bytes2int , functools.partial(int2bytes , length = 1)] , 
-	["src_name_len" , 4 , bytes2int , int2bytes] , 
 	["src_ip" 		, 4 , bytes2ip  , ip2bytes ] , 
 	["src_port" 	, 4 , bytes2int , int2bytes] , 
-	["upp_name" 	, 4 , bytes2int , int2bytes] , 
-	["low_name" 	, 4 , bytes2int , int2bytes] , 
 ]
 
 FLAG_MASK = [
 	["SPE" , 1 << 0] , 
 	["STP" , 1 << 1] , 
+	["ENT" , 1 << 2] ,
+	["ADV" , 1 << 3] ,
+	["ADD" , 1 << 4] ,
 ]

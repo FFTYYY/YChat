@@ -1,12 +1,11 @@
 import socket
 from .utils.rand_val import rand_port
 
-
 class SendServer:
 	def __init__(self , host = "127.0.0.1"):
-		self.host 		= host
+		self.host = host
 
-		self.targets = []
+		self.targets = {}
 
 	def add_target(self , tarip = "127.0.0.1" , tarport = 65432):
 		my_port = rand_port()
@@ -15,17 +14,15 @@ class SendServer:
 		s.bind( (self.host , my_port))
 		s.connect( (tarip, tarport) )
 
-		self.targets.append({
-			"ip" 		: tarip , 
-			"port" 		: tarport , 
-			"socket" 	: s , 
-		})
-
+		self.targets[tarip , tarport] = s
 
 	def send(self , data):
-		for tar in self.targets:
-			tar["socket"].sendall(data)
+		for addr , soc in self.targets.items():
+			soc.sendall(data)
+
+	def send_to(self , tarip , tarport , data):
+		self.targets[(tarip , tarport)].sendall(data)
 
 	def close(self):
-		for tar in self.targets:
-			tar["socket"].close()
+		for addr , soc in self.targets.items():
+			soc.close()

@@ -1,6 +1,11 @@
-from ..listener import ListenServer
+from ..listener import ListenServer , default_callback
 from ..sender import SendServer
 from ..proto import Message
+from ..utils.hashing import hashing
+
+from ..ui.cli_actions import ui_actions
+
+
 '''
 [FLAGS：1 | 源名称长度：4 | 消息上级名称：4 | 消息下级名称：4 | 源名称 | 源数据]
 FLAGS： 
@@ -13,19 +18,41 @@ class ConnectObject:
 		self.listenport = listenport
 		self.ip = my_ip
 		self.name = name
+		self.hash = hashing(my_ip , listenport)
 
+	def prepare(self):		
 		self.send_server = SendServer(host = self.ip)
 
+		if hasattr(self , "onget"): callback = self.onget
+		else:						callback = default_callback
+
+		self.listen_server = ListenServer(host = self.ip , port = self.listenport , callback = callback)
+		self.listen_server.start()
+		return self
 
 	def from_msg(self , data):
 		return Message.fromdata(data)
 
-	def send(self , content , flags = [] , name = None , ip = None):
-		msg = Message(
-			src_name 	= name or self.name, 
+	def make_msg(self , content , flags = [] , ip = None):
+		return Message(
 			src_ip 		= ip or self.ip , 
 			src_port 	= self.listenport , 
-			msg_cont 	= content , 
+			cont 	= content , 
 			flags 		= flags
 		)
-		self.send_server.send(msg.todata())
+
+	def send(self , content_or_msg , flags = [] , ip = None):
+
+		if isinstance(content_or_msg , Message):
+			msg = content_or_msg
+		else: msg = self.make_msg(content_or_msg , flags , ip)
+
+		self.send_server.send(msg.todata())	
+
+	def send_to(self , tarip , tarport , content_or_msg , flags = [] , ip = None):
+
+		if isinstance(content_or_msg , Message):
+			msg = content_or_msg
+		else: msg = self.make_msg(content_or_msg , flags , ip)
+		
+		self.send_server.send_to(tarip , tarport , msg.todata())

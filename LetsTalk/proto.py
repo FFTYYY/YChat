@@ -24,11 +24,8 @@ class DataReader:
 		return self.read(*pargs , **kwargs)
 
 class Message:
-	def __init__(self , src_name , msg_cont , src_ip , src_port , flags = 0 , upp_name = 0, low_name = 0):
-		self.src_name = src_name
-		self.msg_cont = msg_cont
-		self.upp_name = upp_name
-		self.low_name = low_name
+	def __init__(self , cont , src_ip , src_port , flags = 0):
+		self.cont = cont
 		self.src_ip   = src_ip
 		self.src_port = src_port
 		
@@ -44,8 +41,8 @@ class Message:
 			if self.flags_dic.get(fname):
 				self.flags = self.flags | fmask
 
-		self.src_name_len = len(bytes(src_name , encoding = "utf-8"))
-
+		self.regularize()
+	
 	def hasflag(self , flagname):
 		return self.flags_dic.get(flagname) or False
 
@@ -53,8 +50,7 @@ class Message:
 		s = "MSG: [ "
 		for field_name , field_len , for_func , bak_func in HEADINFO:
 			s += repr(self.__dict__[field_name]) + " | "
-		s += repr(self.src_name) + " |"
-		s += repr(self.msg_cont) + " ] "
+		s += repr(self.cont) + " ] "
 		return s
 
 	def todata(self):
@@ -62,8 +58,7 @@ class Message:
 		data = b""
 		for field_name , field_len , for_func , bak_func in HEADINFO:
 			data += bak_func(self.__dict__[field_name])
-		data += bytes(self.src_name , encoding = "utf-8")
-		data += bytes(self.msg_cont , encoding = "utf-8")
+		data += bytes(self.cont , encoding = "utf-8")
 
 		return data
 
@@ -73,13 +68,12 @@ class Message:
 		for field_name , field_len , for_func , bak_func in HEADINFO:
 			dic[field_name] = for_func(reader(data , field_len))
 
-		dic["src_name"] = str(reader(data , dic['src_name_len']) , encoding = "utf-8")
-		dic["msg_cont"] = str(reader(data , -1) , encoding = "utf-8")
-
-		dic.pop("src_name_len")
+		dic["cont"] = str(reader(data , -1) , encoding = "utf-8")
 
 		return Message(**dic)
 
 
-	def check(self):
-		pass
+	def regularize(self):
+		'''检查消息是否合规，如果不合规，则尝试令其合规，如果无法做到，就抛出异常
+		'''
+		self.cont = self.cont[:CONTENT_LEN]
