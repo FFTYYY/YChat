@@ -1,9 +1,10 @@
 import socket
 import threading
+from .proto import Message
 
 def default_callback(data , ip):
 	ip , port = ip
-	print (ip , port , ":", data)
+	print (ip , port , ":", Message.fromdata(data))
 				
 
 def listen(host = "127.0.0.1" , port = 65432 , callback = default_callback):

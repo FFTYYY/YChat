@@ -46,7 +46,7 @@ class Message:
 
 		self.src_name_len = len(bytes(src_name , encoding = "utf-8"))
 
-	def hasflag(flagname):
+	def hasflag(self , flagname):
 		return self.flags_dic.get(flagname) or False
 
 	def __str__(self):
@@ -73,8 +73,8 @@ class Message:
 		for field_name , field_len , for_func , bak_func in HEADINFO:
 			dic[field_name] = for_func(reader(data , field_len))
 
-		dic["src_name"] = str(reader(data , dic['src_name_len']))
-		dic["msg_cont"] = str(reader(data , -1))
+		dic["src_name"] = str(reader(data , dic['src_name_len']) , encoding = "utf-8")
+		dic["msg_cont"] = str(reader(data , -1) , encoding = "utf-8")
 
 		dic.pop("src_name_len")
 
