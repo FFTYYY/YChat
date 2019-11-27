@@ -1,22 +1,31 @@
 import socket
+from .utils.rand_val import rand_port
+
 
 class SendServer:
-	def __init__(self , host = "127.0.0.1" , tarip = "127.0.0.1" , myport = 23333 , tarport = 65432):
+	def __init__(self , host = "127.0.0.1"):
 		self.host 		= host
-		self.tarip 		= tarip
-		self.myport 	= myport
-		self.tarport 	= tarport
 
-	def start(self):
-		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.socket.bind( (self.host , self.myport))
-		self.socket.connect( (self.tarip, self.tarport) )
+		self.targets = []
+
+	def add_target(self , tarip = "127.0.0.1" , tarport = 65432):
+		my_port = rand_port()
+		
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.bind( (self.host , my_port))
+		s.connect( (tarip, tarport) )
+
+		self.targets.append({
+			"ip" 		: tarip , 
+			"port" 		: tarport , 
+			"socket" 	: s , 
+		})
+
 
 	def send(self , data):
-		if not hasattr(self , "socket"):
-			print ("no socket")
-			return	
-		self.socket.sendall(data)
+		for tar in self.targets:
+			tar["socket"].sendall(data)
 
 	def close(self):
-		self.socket.close()
+		for tar in self.targets:
+			tar["socket"].close()

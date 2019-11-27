@@ -18,8 +18,8 @@ def room_action(obj , msg):
 			obj.send("oh hello!")
 
 class Room(ConnectObject):
-	def __init__(self , my_ip = "127.0.0.1" , name = "" , sendport = None , listenport = 23333):
-		super().__init__(my_ip , name , sendport , listenport)
+	def __init__(self , my_ip = "127.0.0.1" , name = "" , listenport = 23333):
+		super().__init__(my_ip , name , listenport)
 
 		self.mems = []
 
@@ -28,8 +28,7 @@ class Room(ConnectObject):
 		self.listen_server.start()
 
 	def connect_member(self , memb_ip , memb_prot):
-		self.send_server = SendServer(host = self.ip , tarip = memb_ip , myport = self.sendport , tarport = memb_prot)
-		self.send_server.start()
+		self.send_server.add_target(tarip = memb_ip , tarport = memb_prot)
 
 	def onget(self , data , ip):
 		ip , port = ip
