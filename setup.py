@@ -7,7 +7,7 @@ with open('LICENSE', encoding = 'utf-8') as f:
 	license = f.read()
 
 setup(
-	name					= 'LetsTalk',
+	name					= 'YChat',
 	version					= '0.1.0',
 	description				= '',
 	long_description		= readme,
@@ -15,6 +15,9 @@ setup(
 	license					= license,
 	author					= 'YYY',
 	python_requires			= '>=3.0',
-	packages				= ['LetsTalk'],
-	entry_points			= {'console_scripts': ['YGLOB=YGlobalFunctions.entry:main']}
+	packages				= ['YChat'],
+	entry_points			= {'console_scripts': [
+			'server=YChat.entry:run_server_cli' ,
+			'client=YChat.entry:run_client_gui' ,
+		]}
 )

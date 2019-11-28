@@ -3,9 +3,9 @@ from PyQt5.QtGui import *
 from PyQt5.QtQuick import *
 import pdb
 import os , sys
-from LetsTalk.objects import Member
-from LetsTalk.ui.gui_actions import message_box
-from LetsTalk.utils.rand_val import rand_port
+from YChat.objects import Member
+from YChat.ui.gui_actions import message_box
+from YChat.utils.rand_val import rand_port
 
 class Liaison(QObject):
 
@@ -51,17 +51,20 @@ class Liaison(QObject):
 		self._logedin = False
 
 
+def main():
+	path = os.path.relpath( os.path.join(os.path.dirname(__file__) , '../ui/main.qml') , start = ".") #qt quick 只吃相对路径
+	app = QGuiApplication([])
+	view = QQuickView()
+	view.setTitle("LetsTalk")
 
-path = os.path.relpath( os.path.join(os.path.dirname(__file__) , '../ui/main.qml') , start = ".") #qt quick 只吃相对路径
-app = QGuiApplication([])
-view = QQuickView()
-view.setTitle("LetsTalk")
+	lia = Liaison()
+	cont = view.rootContext()
+	cont.setContextProperty("lia", lia)
 
-lia = Liaison()
-cont = view.rootContext()
-cont.setContextProperty("lia", lia)
+	view.setSource(QUrl(path))
 
-view.setSource(QUrl(path))
+	view.show()
+	app.exec_()
 
-view.show()
-app.exec_()
+if __name__ == "__main__":
+	main()
