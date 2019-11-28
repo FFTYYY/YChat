@@ -17,7 +17,7 @@ class Liaison(QObject):
 	@pyqtSlot(str,str,int)
 	def login(self,name,room_ip,room_port):
 		port = rand_port()
-		self.memb = Member(name = name , listenport = port).prepare()
+		self.memb = Member(my_ip = "0.0.0.0" , name = name , listenport = port).prepare()
 		self.memb.connect_room(room_ip = room_ip , room_port = room_port)
 
 		self._logedin = True
