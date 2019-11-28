@@ -52,7 +52,11 @@ class Liaison(QObject):
 
 
 def main():
-	path = os.path.relpath( os.path.join(os.path.dirname(__file__) , '../ui/main.qml') , start = ".") #qt quick 只吃相对路径
+	path = os.path.abspath(os.path.join(os.path.dirname(__file__) , '../ui/main.qml')) #qt quick 只吃相对路径
+	path = path.replace("\\" , "/")
+	path = "file:///" + path
+	print (path)
+
 	app = QGuiApplication([])
 	view = QQuickView()
 	view.setTitle("LetsTalk")
@@ -62,7 +66,7 @@ def main():
 	cont.setContextProperty("lia", lia)
 
 	view.setSource(QUrl(path))
-
+	
 	view.show()
 	app.exec_()
 
