@@ -1,6 +1,7 @@
 from .base import *
 from .special_messages import room_special_msgs as specials
 from ..utils.hashing import hashing
+from ..utils.logger import Logger
 
 def room_action(self , msg):
 
@@ -17,7 +18,7 @@ def room_action(self , msg):
 
 		for _ , name in self.mem_name.items():
 			self.send( specials["add"]( self , name ) )
-		
+
 
 	elif msg.hasflag("QUI"):
 		if mem_info not in self.mem_name:
@@ -29,11 +30,13 @@ def room_action(self , msg):
 		sender_name = self.mem_name[mem_info]
 		self.send( specials["transmit"]( self , msg , sender_name ) )
 
+
 class Room(ConnectObject):
 	def __init__(self , my_ip = "127.0.0.1" , name = "" , listenport = 23333):
 		super().__init__(my_ip , name , listenport)
 
 		self.mem_name = {}
+		self.logger = Logger()
 
 	def connect_member(self , memb_ip , memb_port , mem_name):
 		self.send_server.add_target(tarip = memb_ip , tarport = memb_port)
@@ -57,6 +60,7 @@ class Room(ConnectObject):
 		self.listen_server.close_one(mem_ip , mem_port)
 		name = self.mem_name.pop((mem_ip , mem_port))
 		self.send( specials["advertise"]( self , "%s 离开了聊天室" % name ) )
+
 
 	def onleave(self , leaved):
 		for x in leaved:

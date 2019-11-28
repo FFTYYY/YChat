@@ -172,12 +172,10 @@ Rectangle
                 if(!lia.logedin())
                 {
                     name_input_asker.text = "输入你的名称:"
-                    port_input_asker.visible = true
                     sad_input_asker.visible = true
                     sport_input_asker.visible = true
                     
                     nameinput.readOnly = false
-                    portinput.visible = true
                     sadinput.visible = true
                     sportinput.visible = true
 
@@ -199,17 +197,15 @@ Rectangle
             
             onClicked:
             {
-                lia.login(nameinput.text , portinput.text , sadinput.text ,sportinput.text)
+                lia.login(nameinput.text , sadinput.text ,sportinput.text)
                 
                 if(lia.logedin())
                 {
                     name_input_asker.text = "你的名称:"
-                    port_input_asker.visible = false
                     sad_input_asker.visible = false
                     sport_input_asker.visible = false
                     
                     nameinput.readOnly = true
-                    portinput.visible = false
                     sadinput.visible = false
                     sportinput.visible = false
 

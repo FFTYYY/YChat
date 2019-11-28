@@ -16,6 +16,8 @@ def member_get_advtise(self , cont):
 
 @ui_action("member_get_words")
 def member_get_words(self , sender_name , sender_cont , mem_hash = 0, self_hash = -1):
+	if len(sender_cont) == 0:
+		return 
 	mprint ("%s 说： %s" % (sender_name , sender_cont))
 
 @ui_action("member_get_mem_name")

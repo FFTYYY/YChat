@@ -14,7 +14,7 @@ class Liaison(QObject):
 		self.memb = None
 		self._logedin = False
 
-	@pyqtSlot(str,int,str,int)
+	@pyqtSlot(str,str,int)
 	def login(self,name,room_ip,room_port):
 		port = rand_port()
 		self.memb = Member(name = name , listenport = port).prepare()
@@ -28,7 +28,7 @@ class Liaison(QObject):
 
 	@pyqtSlot(str)
 	def say(self,words):
-		if self.memb is None:
+		if not self._logedin:
 			return
 		self.memb.say(words)
 
@@ -39,7 +39,8 @@ class Liaison(QObject):
 
 	@pyqtSlot()
 	def logout(self):
-		return self.memb.logout()
+		self.memb.logout()
+		self._logedin = False
 
 
 
