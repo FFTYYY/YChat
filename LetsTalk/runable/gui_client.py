@@ -5,6 +5,7 @@ import pdb
 import os , sys
 from LetsTalk.objects import Member
 from LetsTalk.ui.gui_actions import message_box
+from LetsTalk.utils.rand_val import rand_port
 
 class Liaison(QObject):
 
@@ -13,14 +14,13 @@ class Liaison(QObject):
 		self.memb = None
 		self._logedin = False
 
-	@pyqtSlot(str,int,str,int,result = bool)
-	def login(self,name,port,room_ip,room_port):
-		print (repr(name) , repr(port))
+	@pyqtSlot(str,int,str,int)
+	def login(self,name,room_ip,room_port):
+		port = rand_port()
 		self.memb = Member(name = name , listenport = port).prepare()
 		self.memb.connect_room(room_ip = room_ip , room_port = room_port)
 
 		self._logedin = True
-		return self._logedin
 
 	@pyqtSlot(result = bool)
 	def logedin(self):
@@ -35,6 +35,11 @@ class Liaison(QObject):
 	@pyqtSlot(result = str)
 	def messages(self):
 		return "\n".join(message_box)
+
+
+	@pyqtSlot()
+	def logout(self):
+		return self.memb.logout()
 
 
 

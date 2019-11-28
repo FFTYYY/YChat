@@ -17,6 +17,10 @@ class SendServer:
 
 		self.targets[tarip , tarport] = s
 
+	def remove_target(self , tarip , tarport):
+		self.targets[tarip , tarport].close()
+		self.targets.pop((tarip , tarport))
+
 	def send(self , data):
 		leaved = []
 		for tarip , tarport in copy.copy(self.targets):
@@ -33,10 +37,6 @@ class SendServer:
 			self.targets[(tarip , tarport)].sendall(data)
 		except ConnectionResetError:
 			leaved = True
-			self.targets[(tarip , tarport)].close()
-
-		if leaved:
-			self.targets.pop((tarip , tarport))
 			
 		return not leaved
 

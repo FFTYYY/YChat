@@ -25,6 +25,12 @@ def onenter(obj):
 		content = obj.name , 
 		flags = ["ENT"] , 
 	)
+@memb_msg_func("quit")
+def quit(obj):
+	return obj.make_msg(
+		content = "" , 
+		flags = ["QUI"] , 
+	)
 
 
 @room_msg_func("transmit")

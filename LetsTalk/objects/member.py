@@ -31,12 +31,19 @@ class Member(ConnectObject):
 	def connect_room(self , room_ip = "127.0.0.1", room_port = 23333):
 		self.room_members = []
 		self.send_server.add_target(tarip = room_ip , tarport = room_port)
+
 		self.send( specials["onenter"](self) )
+	
+	def onprepare(self):
+		def unexpect_quit(ip , port):
+			self.onleave([(ip , port)])
+
+		self.listen_server.unexpect_quit = unexpect_quit
 
 	def say(self , words):
 		self.send( specials["say"](self , words) )
 
-	def onget(self , data , ip):
+	def onget(self , data , ip , who_get = None):
 		ip , port = ip
 		msg = self.from_msg(data)
 
@@ -47,3 +54,7 @@ class Member(ConnectObject):
 			return 
 		self.close()
 		ui_actions["member_server_closed"](self)
+
+	def logout(self):
+		self.send( specials["quit"](self) )
+		self.close()

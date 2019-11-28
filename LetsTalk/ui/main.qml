@@ -74,6 +74,16 @@ Rectangle
         width: 142
         height: 324
         
+        Text {
+            id: name_input_asker
+            x: 8
+            y: 21
+            width: 126
+            height: 25
+            text: qsTr("输入你的名称:")
+            font.pixelSize: 20
+        }
+        
         TextInput {
             id: nameinput
             x: 8
@@ -93,46 +103,9 @@ Rectangle
         }
         
         Text {
-            id: name_input_asker
-            x: 8
-            y: 21
-            width: 126
-            height: 25
-            text: qsTr("输入你的名称:")
-            font.pixelSize: 20
-        }
-        
-        Text {
-            id: port_input_asker
-            x: 8
-            y: 84
-            width: 126
-            height: 25
-            text: qsTr("你的端口：")
-            font.pixelSize: 20
-        }
-        
-        TextInput {
-            id: portinput
-            x: 8
-            y: 115
-            width: 102
-            height: 26
-            text: qsTr("2333")
-            font.family: "Tahoma"
-            font.pixelSize: 16
-            Rectangle {
-                color: "#0000ff"
-                z: -1
-                anchors.fill: parent
-            }
-            selectByMouse: true
-        }
-        
-        Text {
             id: sad_input_asker
             x: 8
-            y: 150
+            y: 95
             width: 126
             height: 25
             text: qsTr("服务器地址")
@@ -142,7 +115,7 @@ Rectangle
         TextInput {
             id: sadinput
             x: 8
-            y: 181
+            y: 126
             width: 102
             height: 26
             text: qsTr("127.0.0.1")
@@ -159,7 +132,7 @@ Rectangle
         Text {
             id: sport_input_asker
             x: 8
-            y: 213
+            y: 158
             width: 126
             height: 25
             text: qsTr("服务器端口")
@@ -169,7 +142,7 @@ Rectangle
         TextInput {
             id: sportinput
             x: 8
-            y: 244
+            y: 189
             width: 102
             height: 26
             text: qsTr("23333")
@@ -182,35 +155,72 @@ Rectangle
             }
             selectByMouse: true
         }
-    }
-    
-    Button {
-        id: login
-        x: 585
-        y: 296
-        width: 84
-        height: 22
-        text: qsTr("登录")
-        
-        onClicked:
-        {
-            lia.login(nameinput.text , portinput.text , sadinput.text ,sportinput.text)
-            
-            if(lia.logedin())
+
+        Button {
+            id: logout
+            x: 34
+            y: 296
+            width: 84
+            height: 22
+            visible: false
+            text: qsTr("登出")
+
+            onClicked:
             {
-                name_input_asker.text = "你的名称:"
-                port_input_asker.visible = false
-                sad_input_asker.visible = false
-                sport_input_asker.visible = false
+                lia.logout()
                 
-                nameinput.readOnly = true
-                portinput.visible = false
-                sadinput.visible = false
-                sportinput.visible = false
-                login.visible = false
+                if(!lia.logedin())
+                {
+                    name_input_asker.text = "输入你的名称:"
+                    port_input_asker.visible = true
+                    sad_input_asker.visible = true
+                    sport_input_asker.visible = true
+                    
+                    nameinput.readOnly = false
+                    portinput.visible = true
+                    sadinput.visible = true
+                    sportinput.visible = true
+
+                    logout.visible = false
+                    login.visible = true
+                }
+            }
+
+
+        }
+
+        Button {
+            id: login
+            x: 34
+            y: 296
+            width: 84
+            height: 22
+            text: qsTr("登录")
+            
+            onClicked:
+            {
+                lia.login(nameinput.text , portinput.text , sadinput.text ,sportinput.text)
+                
+                if(lia.logedin())
+                {
+                    name_input_asker.text = "你的名称:"
+                    port_input_asker.visible = false
+                    sad_input_asker.visible = false
+                    sport_input_asker.visible = false
+                    
+                    nameinput.readOnly = true
+                    portinput.visible = false
+                    sadinput.visible = false
+                    sportinput.visible = false
+
+                    login.visible = false
+                    logout.visible = true
+                }
             }
         }
+
     }
+    
     
     Timer {
         id: flusher
@@ -222,4 +232,5 @@ Rectangle
         }
     }
     
+
 }

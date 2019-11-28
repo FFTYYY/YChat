@@ -17,4 +17,4 @@ try:
 		words = input()
 		memb.say(words)
 except KeyboardInterrupt:
-	memb.close()
+	memb.logout()
