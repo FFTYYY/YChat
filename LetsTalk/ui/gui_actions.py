@@ -22,7 +22,7 @@ def member_get_words(self , sender_name , sender_cont , mem_hash = 0, self_hash 
 
 @ui_action("member_get_mem_name")
 def member_get_mem_name(self , name):
-	mprint ("【当前聊天室成员：%s】" % name)
+	pass
 
 @ui_action("member_server_closed")
 def member_server_closed(self):

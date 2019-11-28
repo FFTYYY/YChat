@@ -32,7 +32,12 @@ def quit(obj):
 		flags = ["QUI"] , 
 	)
 
-
+@room_msg_func("transmit_quit")
+def transmit_quit(obj , name):
+	return obj.make_msg(
+		content = name , 
+		flags = ["QUI"] , 
+	)
 @room_msg_func("transmit")
 def transmit(obj , msg , sender_name):
 	msg.cont = sender_name + "\n" + msg.cont
@@ -49,5 +54,12 @@ def advertise(obj , cont = ""):
 def add(obj , name = ""):
 	return obj.make_msg(
 		content = name ,  
+		flags = ["ADD"] , 
+	)
+
+@room_msg_func("unadd")
+def unadd(obj , name = ""):
+	return obj.make_msg(
+		content = "\n" + name ,  
 		flags = ["ADD"] , 
 	)

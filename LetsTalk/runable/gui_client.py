@@ -34,7 +34,15 @@ class Liaison(QObject):
 
 	@pyqtSlot(result = str)
 	def messages(self):
+		if not self._logedin:
+			return
 		return "\n".join(message_box)
+
+	@pyqtSlot(result = str)
+	def members(self):
+		if not self._logedin:
+			return ""
+		return "\n".join(self.memb.room_members)
 
 
 	@pyqtSlot()

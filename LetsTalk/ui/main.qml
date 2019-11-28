@@ -18,7 +18,7 @@ Rectangle
         id: inputer
         x: 8
         y: 338
-        width: 684
+        width: 536
         height: 110
         text: qsTr("")
         font.weight: Font.ExtraLight
@@ -34,8 +34,8 @@ Rectangle
         
         Button {
             id: send
-            x: 577
-            y: 126
+            x: 444
+            y: 123
             width: 84
             height: 28
             text: qsTr("发送")
@@ -72,7 +72,7 @@ Rectangle
         x: 550
         y: 8
         width: 142
-        height: 324
+        height: 265
         
         Text {
             id: name_input_asker
@@ -158,8 +158,8 @@ Rectangle
 
         Button {
             id: logout
-            x: 34
-            y: 296
+            x: 29
+            y: 226
             width: 84
             height: 22
             visible: false
@@ -189,8 +189,8 @@ Rectangle
 
         Button {
             id: login
-            x: 34
-            y: 296
+            x: 29
+            y: 226
             width: 84
             height: 22
             text: qsTr("登录")
@@ -218,6 +218,17 @@ Rectangle
     }
     
     
+    Text {
+        id: memb_lis
+        x: 550
+        y: 308
+        width: 142
+        height: 140
+        text: qsTr("")
+        font.pixelSize: 17
+    }
+    
+
     Timer {
         id: flusher
         interval: 100
@@ -225,8 +236,18 @@ Rectangle
         repeat: true
         onTriggered: {
             msgs.text = lia.messages()
+            memb_lis.text = lia.members()
         }
     }
     
-
+    Text {
+        id: mem_lis_title
+        x: 550
+        y: 279
+        width: 142
+        height: 23
+        text: qsTr("成员列表")
+        font.pixelSize: 16
+    }
+    
 }

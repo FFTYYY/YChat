@@ -14,11 +14,13 @@ def room_action(self , msg):
 		if mem_info in self.mem_name:
 			raise Exception("multiple connection!")
 
+		for x , name in self.mem_name.items():
+			self.send( specials["unadd"]( self , str(name) ) )
+
 		self.connect_member(*mem_info , mem_name = msg.cont)
 
-		for _ , name in self.mem_name.items():
-			self.send( specials["add"]( self , name ) )
-
+		for x , name in self.mem_name.items():
+			self.send( specials["add"]( self , str(name) ) )
 
 	elif msg.hasflag("QUI"):
 		if mem_info not in self.mem_name:
@@ -41,6 +43,7 @@ class Room(ConnectObject):
 	def connect_member(self , memb_ip , memb_port , mem_name):
 		self.send_server.add_target(tarip = memb_ip , tarport = memb_port)
 		self.mem_name[(memb_ip , memb_port)] = mem_name
+
 		self.send( specials["advertise"]( self , "%s 加入了聊天室" % mem_name ) )
 
 	def onprepare(self):
@@ -59,6 +62,8 @@ class Room(ConnectObject):
 		self.send_server.remove_target(mem_ip , mem_port)
 		self.listen_server.close_one(mem_ip , mem_port)
 		name = self.mem_name.pop((mem_ip , mem_port))
+
+		self.send( specials["transmit_quit"]( self , name ) )
 		self.send( specials["advertise"]( self , "%s 离开了聊天室" % name ) )
 
 

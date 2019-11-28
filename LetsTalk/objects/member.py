@@ -14,8 +14,18 @@ def member_action(self , msg):
 	if msg.hasflag("ADD"):
 		'''tell me members
 		'''
-		self.room_members.append(msg.cont)
-		ui_actions["member_get_mem_name"](self , msg.cont)
+		name = msg.cont
+
+		if name.startswith("\n"):
+			#not a name , indicating fake quit
+			self.room_members.remove(name[1:])
+			return
+
+		self.room_members.append(name)
+		ui_actions["member_get_mem_name"](self , name)
+		
+	elif msg.hasflag("QUI"):
+		self.room_members.remove(msg.cont)
 	else:
 		'''transmitted msg'''
 
