@@ -3,8 +3,7 @@ from ..sender import SendServer
 from ..proto import Message
 from ..utils.hashing import hashing
 
-from ..ui.cli_actions import ui_actions
-
+from ..ui.gui_actions import ui_actions
 
 '''
 [FLAGS：1 | 源名称长度：4 | 消息上级名称：4 | 消息下级名称：4 | 源名称 | 源数据]

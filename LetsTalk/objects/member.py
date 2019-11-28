@@ -18,12 +18,10 @@ def member_action(self , msg):
 		ui_actions["member_get_mem_name"](self , msg.cont)
 	else:
 		'''transmitted msg'''
-		if mem_hash == self.hash: 
-			return #我自己发的消息
 
 		sender_name = msg.cont.split("\n")[0]
 		sender_cont = msg.cont[len(sender_name) + 1 : ]
-		ui_actions["member_get_words"](self , sender_name , sender_cont)
+		ui_actions["member_get_words"](self , sender_name , sender_cont , mem_hash , self.hash)
 
 
 class Member(ConnectObject):

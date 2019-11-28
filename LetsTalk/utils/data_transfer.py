@@ -1,6 +1,6 @@
 
 def bytes2str(x):
-	return str(x)
+	return str(x , encoding = "utf-8")
 
 def str2bytes(x):
 	return bytes(x , encoding = "utf-8")
