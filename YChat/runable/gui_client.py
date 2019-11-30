@@ -14,10 +14,10 @@ class Liaison(QObject):
 		self.memb = None
 		self._logedin = False
 
-	@pyqtSlot(str,str,int)
-	def login(self,name,room_ip,room_port):
+	@pyqtSlot(str,str,str,int)
+	def login(self,name,my_ip,room_ip,room_port):
 		port = rand_port()
-		self.memb = Member(my_ip = "0.0.0.0" , name = name , listenport = port).prepare()
+		self.memb = Member(my_ip = my_ip , name = name , listenport = port).prepare()
 		self.memb.connect_room(room_ip = room_ip , room_port = room_port)
 
 		self._logedin = True
@@ -59,7 +59,7 @@ def main():
 
 	app = QGuiApplication([])
 	view = QQuickView()
-	view.setTitle("LetsTalk")
+	view.setTitle("YChat")
 
 	lia = Liaison()
 	cont = view.rootContext()

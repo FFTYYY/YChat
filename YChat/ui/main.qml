@@ -29,7 +29,7 @@ Rectangle
         Rectangle {
             anchors.fill: parent
             z : -1;
-            color: "red"
+            color: "#bdc2c2"
         }
         
         Button {
@@ -72,12 +72,12 @@ Rectangle
         x: 550
         y: 8
         width: 142
-        height: 265
+        height: 289
         
         Text {
             id: name_input_asker
             x: 8
-            y: 21
+            y: 8
             width: 126
             height: 25
             text: qsTr("输入你的名称:")
@@ -87,7 +87,7 @@ Rectangle
         TextInput {
             id: nameinput
             x: 8
-            y: 52
+            y: 39
             width: 102
             height: 26
             text: qsTr("匿名")
@@ -98,14 +98,14 @@ Rectangle
             Rectangle {
                 anchors.fill: parent
                 z : -1;
-                color: "blue"
+                color: "#dad9ea"
             }
         }
         
         Text {
             id: sad_input_asker
             x: 8
-            y: 95
+            y: 133
             width: 126
             height: 25
             text: qsTr("服务器地址")
@@ -115,14 +115,14 @@ Rectangle
         TextInput {
             id: sadinput
             x: 8
-            y: 126
+            y: 164
             width: 102
             height: 26
             text: qsTr("127.0.0.1")
             font.family: "Tahoma"
             font.pixelSize: 16
             Rectangle {
-                color: "#0000ff"
+                color: "#dad9ea"
                 z: -1
                 anchors.fill: parent
             }
@@ -132,7 +132,7 @@ Rectangle
         Text {
             id: sport_input_asker
             x: 8
-            y: 158
+            y: 196
             width: 126
             height: 25
             text: qsTr("服务器端口")
@@ -142,14 +142,14 @@ Rectangle
         TextInput {
             id: sportinput
             x: 8
-            y: 189
+            y: 227
             width: 102
             height: 26
             text: qsTr("23333")
             font.family: "Tahoma"
             font.pixelSize: 16
             Rectangle {
-                color: "#0000ff"
+                color: "#dad9ea"
                 z: -1
                 anchors.fill: parent
             }
@@ -159,7 +159,7 @@ Rectangle
         Button {
             id: logout
             x: 29
-            y: 226
+            y: 259
             width: 84
             height: 22
             visible: false
@@ -172,10 +172,12 @@ Rectangle
                 if(!lia.logedin())
                 {
                     name_input_asker.text = "输入你的名称:"
+                    ip_input_asker.visible = true
                     sad_input_asker.visible = true
                     sport_input_asker.visible = true
                     
                     nameinput.readOnly = false
+                    ipinput.visible = true
                     sadinput.visible = true
                     sportinput.visible = true
 
@@ -190,29 +192,58 @@ Rectangle
         Button {
             id: login
             x: 29
-            y: 226
+            y: 259
             width: 84
             height: 22
             text: qsTr("登录")
             
             onClicked:
             {
-                lia.login(nameinput.text , sadinput.text ,sportinput.text)
+                lia.login(nameinput.text , ipinput.text , sadinput.text ,sportinput.text)
                 
                 if(lia.logedin())
                 {
                     name_input_asker.text = "你的名称:"
+                    ip_input_asker.visible = false
                     sad_input_asker.visible = false
                     sport_input_asker.visible = false
                     
                     nameinput.readOnly = true
+                    ipinput.visible = false
                     sadinput.visible = false
                     sportinput.visible = false
-
+                    
                     login.visible = false
                     logout.visible = true
                 }
             }
+        }
+        
+        Text {
+            id: ip_input_asker
+            x: 8
+            y: 71
+            width: 126
+            height: 25
+            text: qsTr("你的ip:")
+            font.pixelSize: 20
+        }
+        
+        TextInput {
+            id: ipinput
+            x: 8
+            y: 102
+            width: 102
+            height: 26
+            text: qsTr("127.0.0.1")
+            font.family: "Tahoma"
+            font.pixelSize: 16
+            Rectangle {
+                color: "#dad9ea"
+                anchors.fill: parent
+                z: -1
+            }
+            selectByMouse: true
         }
 
     }
@@ -221,11 +252,18 @@ Rectangle
     Text {
         id: memb_lis
         x: 550
-        y: 308
+        y: 332
         width: 142
-        height: 140
+        height: 116
         text: qsTr("")
         font.pixelSize: 17
+        
+        Rectangle {
+            id: rectangle
+            color: "#c6d6e7"
+            z: -1
+            anchors.fill: parent
+        }
     }
     
 
@@ -243,7 +281,7 @@ Rectangle
     Text {
         id: mem_lis_title
         x: 550
-        y: 279
+        y: 303
         width: 142
         height: 23
         text: qsTr("成员列表")

@@ -53,6 +53,8 @@ class Room(ConnectObject):
 		ip , port = ip
 		msg = self.from_msg(data)
 
+		self.logger.log("get msg from {%s}): %s" % (str((ip , port)) , str(msg)))
+
 		who_get.tarip = msg.src_ip
 		who_get.tarport = msg.src_port
 

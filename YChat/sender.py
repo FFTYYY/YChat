@@ -1,6 +1,7 @@
 import socket
 from .utils.rand_val import rand_port
 import copy
+import pdb
 
 class SendServer:
 	def __init__(self , host = "127.0.0.1"):
@@ -9,11 +10,10 @@ class SendServer:
 		self.targets = {}
 
 	def add_target(self , tarip = "127.0.0.1" , tarport = 65432):
-		my_port = rand_port()
+		#my_port = rand_port()
 		
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.bind( (self.host , my_port))
-		s.connect( (tarip, tarport) )
+		s.connect( (tarip, tarport) )		
 
 		self.targets[tarip , tarport] = s
 

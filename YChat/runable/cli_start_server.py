@@ -4,8 +4,10 @@ def main():
 
 	port = input("输入我的端口（默认为23333）：")
 	port = 23333 if not port else int(port) 
-
-	room = Room(my_ip = "0.0.0.0" , listenport = port).prepare()
+	host = input("输入我的ip（默认为0.0.0.0）：")
+	host = "0.0.0.0" if not host else host
+	
+	room = Room(my_ip = host , listenport = port).prepare()
 
 	try:
 		while True: 

@@ -3,3 +3,4 @@
 *.lnk
 *.qmlc
 dist
+sftp-config.json
