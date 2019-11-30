@@ -60,13 +60,8 @@ class ListenServer(threading.Thread):
 			s.bind((self.host, self.port))
 			s.listen()
 
-			conn_num = 0
 			while not self.closed:
 				conn, addr = s.accept()
-
-				conn_num += 1
-				if conn_num > 10:
-					break
 
 				new_child = ChildListener(conn , addr , self.callback , parent = self)
 				new_child.start()
@@ -87,3 +82,4 @@ class ListenServer(threading.Thread):
 	def close(self):
 		for x in self.childs:
 			x.close()
+		self.closed = True

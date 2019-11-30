@@ -23,7 +23,6 @@ def member_action(self , msg):
 
 		self.room_members.append(name)
 		ui_actions["member_get_mem_name"](self , name)
-		
 	elif msg.hasflag("QUI"):
 		self.room_members.remove(msg.cont)
 	else:

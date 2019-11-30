@@ -22,7 +22,7 @@ data_files = [
 
 setup(
 	name					= "YChat",
-	version					= "0.1.4",
+	version					= "0.1.5",
 	url 					= "https://github.com/FFTYYY/YChat",
 	description				= "A simple chatroom program.",
 	long_description		= readme ,

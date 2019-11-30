@@ -72,7 +72,6 @@ class Message:
 
 		return Message(**dic)
 
-
 	def regularize(self):
 		'''检查消息是否合规，如果不合规，则尝试令其合规，如果无法做到，就抛出异常
 		'''

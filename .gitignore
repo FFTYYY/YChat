@@ -4,3 +4,8 @@
 *.qmlc
 dist
 sftp-config.json
+*.docx
+*.tmp
+design.png
+*.eddx
+*.pdf

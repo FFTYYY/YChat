@@ -28,3 +28,4 @@ def member_get_mem_name(self , name):
 def member_server_closed(self):
 	mprint ("【服务关闭了...】")
 	exit(0)
+	

@@ -52,10 +52,9 @@ class Liaison(QObject):
 
 
 def main():
-	path = os.path.abspath(os.path.join(os.path.dirname(__file__) , '../ui/main.qml')) #qt quick 只吃相对路径
+	path = os.path.abspath(os.path.join(os.path.dirname(__file__) , '../ui/main.qml'))
 	path = path.replace("\\" , "/")
 	path = "file:///" + path
-	print (path)
 
 	app = QGuiApplication([])
 	view = QQuickView()

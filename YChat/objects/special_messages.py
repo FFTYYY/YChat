@@ -25,6 +25,7 @@ def onenter(obj):
 		content = obj.name , 
 		flags = ["ENT"] , 
 	)
+
 @memb_msg_func("quit")
 def quit(obj):
 	return obj.make_msg(
@@ -38,6 +39,7 @@ def transmit_quit(obj , name):
 		content = name , 
 		flags = ["QUI"] , 
 	)
+
 @room_msg_func("transmit")
 def transmit(obj , msg , sender_name):
 	msg.cont = sender_name + "\n" + msg.cont
@@ -63,3 +65,4 @@ def unadd(obj , name = ""):
 		content = "\n" + name ,  
 		flags = ["ADD"] , 
 	)
+	
